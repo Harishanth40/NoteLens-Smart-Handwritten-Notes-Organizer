@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoteLens - Smart Handwritten Notes Organizer</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+
+<div class="app-wrapper">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar d-flex flex-column p-3">
+        <a href="index.html" class="d-flex align-items-center mb-4 text-decoration-none px-2 pt-2">
+            <i class="bi bi-journal-bookmark-fill fs-2 me-2 text-primary"></i>
+            <span class="brand-title fs-4">NoteLens</span>
+        </a>
+
+        <hr class="border-secondary opacity-25 mt-0 mb-3">
+
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a href="#hero" class="nav-link active">
+                    <i class="bi bi-house-door-fill"></i> Overview
+                </a>
+            </li>
+            <li>
+                <a href="#demo-upload" class="nav-link">
+                    <i class="bi bi-cloud-arrow-up-fill"></i> Upload & Analyze
+                </a>
+            </li>
+            <li>
+                <a href="#dashboard-section" class="nav-link">
+                    <i class="bi bi-grid-1x2-fill"></i> Live Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="#subjects-section" class="nav-link">
+                    <i class="bi bi-folder-fill"></i> Subjects Directory
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/Harishanth40/NoteLens-Smart-Handwritten-Notes-Organizer" target="_blank" class="nav-link text-warning">
+                    <i class="bi bi-github"></i> GitHub Repo
+                </a>
+            </li>
+        </ul>
+
+        <hr class="border-secondary opacity-25">
+
+        <div class="px-2 py-1">
+            <button id="themeToggleBtn" class="btn btn-outline-light w-100 d-flex align-items-center justify-content-center gap-2 btn-sm">
+                <i id="themeIcon" class="bi bi-moon-stars-fill"></i> Theme Switcher
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <div class="main-content d-flex flex-column flex-grow-1">
+        <!-- Top Navbar -->
+        <header class="top-navbar d-flex justify-content-between align-items-center mb-4 rounded-3 notelens-card">
+            <div class="d-flex align-items-center gap-3">
+                <h5 class="mb-0 fw-bold">NoteLens Live Web Portal</h5>
+            </div>
+            <div>
+                <a href="https://github.com/Harishanth40/NoteLens-Smart-Handwritten-Notes-Organizer" target="_blank" class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-github me-1"></i> View Code on GitHub
+                </a>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <div id="hero" class="hero-section text-center p-5 rounded-4 shadow-sm mb-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-9">
+                    <div class="d-inline-flex align-items-center justify-content-center p-3 bg-primary bg-opacity-10 text-primary rounded-circle mb-3">
+                        <i class="bi bi-journal-bookmark-fill display-4"></i>
+                    </div>
+                    <h1 class="display-4 fw-extrabold mb-3">NoteLens</h1>
+                    <p class="h4 text-primary fw-semibold mb-3">Smart Handwritten Notes Organizer</p>
+                    <p class="lead text-secondary mb-4">
+                        Transform raw handwritten college notes into organized, searchable digital study materials automatically. 
+                        Uses OpenCV image enhancement, Tesseract OCR text extraction, and local NLP subject and topic classification.
+                    </p>
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        <a href="#demo-upload" class="btn btn-primary btn-lg px-4 shadow-sm">
+                            <i class="bi bi-cloud-arrow-up-fill me-2"></i> Try Live Analyzer
+                        </a>
+                        <a href="#dashboard-section" class="btn btn-outline-secondary btn-lg px-4">
+                            <i class="bi bi-grid-1x2-fill me-2"></i> View Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- How It Works -->
+        <div class="mb-5">
+            <div class="text-center mb-4">
+                <h3 class="fw-bold">How NoteLens Works</h3>
+                <p class="text-muted">4 simple steps to digitize and organize handwritten notes</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="notelens-card p-4 h-100 text-center">
+                        <div class="stat-icon bg-primary text-white mx-auto mb-3">1</div>
+                        <h5 class="fw-bold">Upload Image</h5>
+                        <p class="text-secondary small">Drag and drop or select photos of handwritten notebook pages.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="notelens-card p-4 h-100 text-center">
+                        <div class="stat-icon bg-info text-white mx-auto mb-3">2</div>
+                        <h5 class="fw-bold">Enhance & OCR</h5>
+                        <p class="text-secondary small">OpenCV denoises and binarizes handwriting for accurate text extraction.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="notelens-card p-4 h-100 text-center">
+                        <div class="stat-icon bg-success text-white mx-auto mb-3">3</div>
+                        <h5 class="fw-bold">Classify & Detect</h5>
+                        <p class="text-secondary small">Rule-based local NLP detects college subject and topic with confidence score.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="notelens-card p-4 h-100 text-center">
+                        <div class="stat-icon bg-warning text-dark mx-auto mb-3">4</div>
+                        <h5 class="fw-bold">Organize & Export</h5>
+                        <p class="text-secondary small">Review, edit, search anytime, or download clean TXT and PDF documents.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive Demo Upload Section -->
+        <div id="demo-upload" class="notelens-card p-4 mb-5">
+            <h4 class="fw-bold mb-3"><i class="bi bi-magic text-primary me-2"></i>Interactive Note Analysis Portal</h4>
+            <p class="text-muted small">Upload or select a sample handwritten note to run client-side OCR & subject classifier.</p>
+
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="border rounded p-3 text-center bg-light">
+                        <h6 class="fw-bold mb-3">Try Preset Sample Notes</h6>
+                        <div class="d-flex flex-wrap justify-content-center gap-2 mb-3">
+                            <button class="btn btn-sm btn-outline-primary" onclick="loadSampleNote('os')">OS (Deadlock)</button>
+                            <button class="btn btn-sm btn-outline-success" onclick="loadSampleNote('java')">Java (OOP)</button>
+                            <button class="btn btn-sm btn-outline-info" onclick="loadSampleNote('dbms')">DBMS (SQL)</button>
+                            <button class="btn btn-sm btn-outline-warning text-dark" onclick="loadSampleNote('networks')">Networks (TCP/IP)</button>
+                        </div>
+                        <textarea id="demoTextInput" class="form-control extracted-text-area" rows="6" placeholder="Paste or type handwritten text snippet to test classifier..."></textarea>
+                        <button class="btn btn-primary w-100 mt-3" onclick="runClientAnalysis()">
+                            <i class="bi bi-cpu-fill me-1"></i> Analyze Text & Detect Subject
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div id="demoResultsCard" class="border rounded p-3 bg-body-tertiary h-100">
+                        <h6 class="fw-bold mb-3"><i class="bi bi-check-circle-fill text-success me-2"></i>Analysis Results</h6>
+                        <div class="mb-3">
+                            <span class="text-muted small d-block">Detected Subject</span>
+                            <span id="resSubject" class="badge-subject fs-6">Operating Systems</span>
+                        </div>
+                        <div class="mb-3">
+                            <span class="text-muted small d-block">Detected Topic</span>
+                            <span id="resTopic" class="badge-topic fs-6">Deadlock & Synchronization</span>
+                        </div>
+                        <div class="mb-3">
+                            <span class="text-muted small d-block">Confidence Score</span>
+                            <span id="resConfidence" class="badge bg-success fs-6">94.5% Score</span>
+                        </div>
+                        <div class="alert alert-info py-2 small mb-0">
+                            <i class="bi bi-info-circle me-1"></i> Full backend runs with local SQLite database & OpenCV in local Python environment.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Visualizer Section -->
+        <div id="dashboard-section" class="mb-5">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="fw-bold mb-0">Dashboard Analytics</h3>
+                <span class="badge bg-primary">Chart.js Live Engine</span>
+            </div>
+
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <div class="notelens-card p-3 d-flex align-items-center justify-content-between stat-card">
+                        <div>
+                            <span class="text-muted small fw-semibold text-uppercase">Total Notes</span>
+                            <h2 class="fw-bold mb-0 mt-1">18</h2>
+                        </div>
+                        <div class="stat-icon bg-primary bg-opacity-10 text-primary"><i class="bi bi-journal-text"></i></div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="notelens-card p-3 d-flex align-items-center justify-content-between stat-card">
+                        <div>
+                            <span class="text-muted small fw-semibold text-uppercase">Active Subjects</span>
+                            <h2 class="fw-bold mb-0 mt-1">6</h2>
+                        </div>
+                        <div class="stat-icon bg-success bg-opacity-10 text-success"><i class="bi bi-folder2-open"></i></div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="notelens-card p-3 d-flex align-items-center justify-content-between stat-card">
+                        <div>
+                            <span class="text-muted small fw-semibold text-uppercase">Identified Topics</span>
+                            <h2 class="fw-bold mb-0 mt-1">12</h2>
+                        </div>
+                        <div class="stat-icon bg-info bg-opacity-10 text-info"><i class="bi bi-tags"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notelens-card p-4">
+                <h6 class="fw-bold mb-3">Notes Distribution per Subject</h6>
+                <div style="position: relative; height: 260px;">
+                    <canvas id="pageChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subjects Catalog -->
+        <div id="subjects-section" class="mb-5">
+            <h3 class="fw-bold mb-3">Supported Computer Science Subjects</h3>
+            <div class="row g-3">
+                <div class="col-md-4"><div class="notelens-card p-3"><h6 class="fw-bold mb-1">Operating Systems</h6><span class="badge-topic">Deadlock, Paging, Semaphores</span></div></div>
+                <div class="col-md-4"><div class="notelens-card p-3"><h6 class="fw-bold mb-1">Java</h6><span class="badge-topic">OOP, Multithreading, Exceptions</span></div></div>
+                <div class="col-md-4"><div class="notelens-card p-3"><h6 class="fw-bold mb-1">DBMS</h6><span class="badge-topic">Normalization, SQL, B-Trees</span></div></div>
+                <div class="col-md-4"><div class="notelens-card p-3"><h6 class="fw-bold mb-1">Computer Networks</h6><span class="badge-topic">OSI, TCP/IP, Routing</span></div></div>
+                <div class="col-md-4"><div class="notelens-card p-3"><h6 class="fw-bold mb-1">Python</h6><span class="badge-topic">Data Structures, Modules, Decorators</span></div></div>
+                <div class="col-md-4"><div class="notelens-card p-3"><h6 class="fw-bold mb-1">Data Structures</h6><span class="badge-topic">Stacks, Queues, Binary Trees</span></div></div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-auto pt-3 border-top text-center text-muted small">
+            NoteLens – Smart Handwritten Notes Organizer &copy; 2026 • Deployed via GitHub Pages
+        </footer>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Theme toggle
+    const themeBtn = document.getElementById('themeToggleBtn');
+    if (themeBtn) {
+        themeBtn.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-bs-theme') || 'light';
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-bs-theme', next);
+            document.getElementById('themeIcon').className = next === 'dark' ? 'bi bi-sun-fill text-warning' : 'bi bi-moon-stars-fill text-dark';
+        });
+    }
+
+    // Chart.js init
+    const ctx = document.getElementById('pageChart');
+    if (ctx) {
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Operating Systems', 'Java', 'DBMS', 'Computer Networks', 'Python', 'Data Structures'],
+                datasets: [{
+                    label: 'Notes Count',
+                    data: [8, 5, 4, 3, 4, 3],
+                    backgroundColor: 'rgba(79, 70, 229, 0.75)',
+                    borderColor: 'rgb(79, 70, 229)',
+                    borderWidth: 1.5,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+    }
+
+    // Load initial sample
+    loadSampleNote('os');
+});
+
+const samples = {
+    os: "Deadlock occurs when two or more processes wait indefinitely for resources held by each other. Four conditions: Mutual Exclusion, Hold and Wait, No Preemption, Circular Wait. Banker Algorithm avoids deadlock.",
+    java: "class, object, inheritance, polymorphism, encapsulation, interface, exception handling in Java JVM.",
+    dbms: "Database Normalization minimizes redundancy. 1NF: Atomic values. 2NF: No partial dependency. 3NF: No transitive dependency. BCNF: Strict key determinant. Primary key and foreign key relations.",
+    networks: "OSI Reference Model Transport Layer: TCP Transmission Control Protocol connection oriented 3-way handshake SYN SYN-ACK ACK. UDP connectionless socket packet routing."
+};
+
+function loadSampleNote(key) {
+    document.getElementById('demoTextInput').value = samples[key];
+    runClientAnalysis();
+}
+
+function runClientAnalysis() {
+    const text = document.getElementById('demoTextInput').value.lowerCase || document.getElementById('demoTextInput').value.toLowerCase();
+    
+    let subject = 'Other';
+    let topic = 'General Concepts';
+    let conf = 85.0;
+
+    if (text.includes('deadlock') || text.includes('process') || text.includes('banker')) {
+        subject = 'Operating Systems';
+        topic = 'Deadlock & Synchronization';
+        conf = 94.5;
+    } else if (text.includes('java') || text.includes('polymorphism') || text.includes('class')) {
+        subject = 'Java';
+        topic = 'OOP & Core Principles';
+        conf = 96.0;
+    } else if (text.includes('normaliz') || text.includes('sql') || text.includes('1nf')) {
+        subject = 'DBMS';
+        topic = 'Database Normalization';
+        conf = 92.5;
+    } else if (text.includes('tcp') || text.includes('osi') || text.includes('udp')) {
+        subject = 'Computer Networks';
+        topic = 'Transport Layer Protocols';
+        conf = 91.0;
+    }
+
+    document.getElementById('resSubject').textContent = subject;
+    document.getElementById('resTopic').textContent = topic;
+    document.getElementById('resConfidence').textContent = `${conf}% Score`;
+}
+</script>
+</body>
+</html>
