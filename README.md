@@ -138,6 +138,28 @@ Open your browser and navigate to: **`http://127.0.0.1:5000`**
 
 ---
 
+## 🚀 Deployment Guide
+
+### Option 1: GitHub Actions CI/CD (Included)
+This repository includes an automated GitHub Actions workflow (`.github/workflows/ci.yml`). Every time code is pushed to the `main` branch, GitHub automatically provisions a Linux environment, installs Tesseract OCR, sets up Python 3.11, and runs the NoteLens test suite.
+
+You can view live build & test statuses under the **Actions** tab on GitHub:
+👉 **[https://github.com/Harishanth40/NoteLens-Smart-Handwritten-Notes-Organizer/actions](https://github.com/Harishanth40/NoteLens-Smart-Handwritten-Notes-Organizer/actions)**
+
+### Option 2: Free Production Cloud Deployment (Render.com)
+To host NoteLens live on the web for free:
+
+1. Create a free account on **[Render.com](https://render.com)**.
+2. Click **New +** $\rightarrow$ **Web Service**.
+3. Connect your GitHub repository: `Harishanth40/NoteLens-Smart-Handwritten-Notes-Organizer`.
+4. Configure settings:
+   - **Environment**: `Python 3`
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `gunicorn app:app`
+5. Click **Create Web Service**. Render will build and deploy your app live on the web!
+
+---
+
 ## 📜 License
 
 MIT License • Created for College Student Productivity.
