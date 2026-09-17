@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %}NoteLens - Smart Handwritten Notes Organizer{% endblock %}
+{% block header_title %}Welcome to NoteLens{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+    <!-- Hero Section -->
+    <div class="hero-section text-center p-5 rounded-4 shadow-sm mb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="d-inline-flex align-items-center justify-content-center p-3 bg-primary bg-opacity-10 text-primary rounded-circle mb-3">
+                    <i class="bi bi-journal-bookmark-fill display-4"></i>
+                </div>
+                <h1 class="display-4 fw-extrabold mb-3">NoteLens</h1>
+                <p class="h4 text-primary fw-semibold mb-3">Smart Handwritten Notes Organizer</p>
+                <p class="lead text-secondary mb-4 px-md-4">
+                    Transform raw handwritten college notes into organized, searchable digital study materials automatically. 
+                    Uses OpenCV image enhancement, Tesseract OCR text extraction, and local NLP subject and topic classification.
+                </p>
+                <div class="d-flex flex-wrap justify-content-center gap-3">
+                    <a href="{{ url_for('notes.upload') }}" class="btn btn-primary btn-lg px-4 shadow-sm">
+                        <i class="bi bi-cloud-arrow-up-fill me-2"></i> Upload Notes
+                    </a>
+                    <a href="{{ url_for('main.dashboard') }}" class="btn btn-outline-secondary btn-lg px-4">
+                        <i class="bi bi-grid-1x2-fill me-2"></i> View Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- How It Works Section -->
+    <div class="mb-5">
+        <div class="text-center mb-4">
+            <h3 class="fw-bold">How NoteLens Works</h3>
+            <p class="text-muted">4 simple steps to digitize and organize handwritten notes</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="notelens-card p-4 h-100 text-center">
+                    <div class="stat-icon bg-primary text-white mx-auto mb-3">1</div>
+                    <h5 class="fw-bold">Upload Image</h5>
+                    <p class="text-secondary small">Drag and drop or browse photos of your handwritten notebook pages.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="notelens-card p-4 h-100 text-center">
+                    <div class="stat-icon bg-info text-white mx-auto mb-3">2</div>
+                    <h5 class="fw-bold">Enhance & OCR</h5>
+                    <p class="text-secondary small">OpenCV denoises and binarizes handwriting for accurate Tesseract text extraction.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="notelens-card p-4 h-100 text-center">
+                    <div class="stat-icon bg-success text-white mx-auto mb-3">3</div>
+                    <h5 class="fw-bold">Classify & Detect</h5>
+                    <p class="text-secondary small">Rule-based local NLP detects college subject and topic with confidence score.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="notelens-card p-4 h-100 text-center">
+                    <div class="stat-icon bg-warning text-dark mx-auto mb-3">4</div>
+                    <h5 class="fw-bold">Organize & Export</h5>
+                    <p class="text-secondary small">Review, edit, search anytime, or download clean TXT and PDF documents.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Features Section -->
+    <div class="mb-5">
+        <div class="text-center mb-4">
+            <h3 class="fw-bold">Core Features</h3>
+            <p class="text-muted">Built specifically for CS & Engineering students</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="notelens-card p-4 h-100">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-cpu-fill fs-3 text-primary me-3"></i>
+                        <h5 class="fw-bold mb-0">Local NLP Classification</h5>
+                    </div>
+                    <p class="text-secondary small mb-0">
+                        Automatically categorizes notes into 12 predefined computer science subjects like Operating Systems, Java, DBMS, and Networks without paid AI APIs.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="notelens-card p-4 h-100">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-file-earmark-diff-fill fs-3 text-danger me-3"></i>
+                        <h5 class="fw-bold mb-0">Duplicate Note Guard</h5>
+                    </div>
+                    <p class="text-secondary small mb-0">
+                        Uses string sequence analysis to warn you if a similar handwritten note has already been saved into the database.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="notelens-card p-4 h-100">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-file-earmark-pdf-fill fs-3 text-success me-3"></i>
+                        <h5 class="fw-bold mb-0">PDF & TXT Export</h5>
+                    </div>
+                    <p class="text-secondary small mb-0">
+                        Generates clean PDF documents complete with metadata badges, confidence metrics, and formatted text for easy revision.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Subjects - NoteLens{% endblock %}
+{% block header_title %}Subject Directory{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+    <div class="mb-4">
+        <h4 class="fw-bold mb-1">Subjects & Topic Catalogs</h4>
+        <p class="text-muted small">Explore handwritten notes organized by academic discipline</p>
+    </div>
+
+    <div class="row g-4">
+        {% for s in subject_counts %}
+            <div class="col-md-6 col-lg-4">
+                <div class="notelens-card p-4 h-100 d-flex flex-column">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-folder-fill fs-3 text-primary"></i>
+                            <h5 class="fw-bold mb-0">{{ s.name }}</h5>
+                        </div>
+                        <span class="badge bg-primary rounded-pill fs-6">{{ s.count }} Notes</span>
+                    </div>
+
+                    <p class="text-secondary small mb-3 flex-grow-1">
+                        {% if s.count > 0 %}
+                            Contains {{ s.topics_count }} unique topic categories.
+                        {% else %}
+                            No notes uploaded under this subject yet.
+                        {% endif %}
+                    </p>
+
+                    <div class="mt-auto">
+                        <a href="{{ url_for('notes.subject_notes', subject_name=s.name) }}" class="btn btn-outline-primary btn-sm w-100 {% if s.count == 0 %}disabled{% endif %}">
+                            View {{ s.name }} Notes &rarr;
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

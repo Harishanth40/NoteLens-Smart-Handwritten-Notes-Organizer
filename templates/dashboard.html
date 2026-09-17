@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - NoteLens{% endblock %}
+{% block header_title %}Analytics Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+    <!-- Action Bar / Demo Controls -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="fw-bold mb-1">Study Overview</h4>
+            <p class="text-muted small mb-0">Track your digitized handwritten notes and subject distribution</p>
+        </div>
+        <div class="d-flex gap-2">
+            {% if total_notes == 0 %}
+                <form action="{{ url_for('main.load_demo_data') }}" method="POST">
+                    <button type="submit" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-database-add me-1"></i> Load Demo Notes
+                    </button>
+                </form>
+            {% else %}
+                <form action="{{ url_for('main.clear_demo_data') }}" method="POST" onsubmit="return confirm('Clear sample demo notes?');">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-trash3 me-1"></i> Clear Demo Data
+                    </button>
+                </form>
+            {% endif %}
+            <a href="{{ url_for('notes.upload') }}" class="btn btn-primary btn-sm">
+                <i class="bi bi-plus-lg me-1"></i> Add New Note
+            </a>
+        </div>
+    </div>
+
+    <!-- Stat Counter Widgets -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="notelens-card p-3 d-flex align-items-center justify-content-between stat-card">
+                <div>
+                    <span class="text-muted small fw-semibold text-uppercase">Total Notes</span>
+                    <h2 class="fw-bold mb-0 mt-1">{{ total_notes }}</h2>
+                </div>
+                <div class="stat-icon bg-primary bg-opacity-10 text-primary">
+                    <i class="bi bi-journal-text"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="notelens-card p-3 d-flex align-items-center justify-content-between stat-card">
+                <div>
+                    <span class="text-muted small fw-semibold text-uppercase">Active Subjects</span>
+                    <h2 class="fw-bold mb-0 mt-1">{{ total_subjects }}</h2>
+                </div>
+                <div class="stat-icon bg-success bg-opacity-10 text-success">
+                    <i class="bi bi-folder2-open"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="notelens-card p-3 d-flex align-items-center justify-content-between stat-card">
+                <div>
+                    <span class="text-muted small fw-semibold text-uppercase">Identified Topics</span>
+                    <h2 class="fw-bold mb-0 mt-1">{{ total_topics }}</h2>
+                </div>
+                <div class="stat-icon bg-info bg-opacity-10 text-info">
+                    <i class="bi bi-tags"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart & Subject Distribution Section -->
+    <div class="row g-4 mb-4">
+        <!-- Chart.js Notes Per Subject -->
+        <div class="col-lg-8">
+            <div class="notelens-card p-4 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="fw-bold mb-0">Notes Distribution per Subject</h6>
+                    <span class="badge bg-light text-dark">Chart.js Visualizer</span>
+                </div>
+                <div style="position: relative; height: 280px;">
+                    <canvas id="subjectChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Subject Stats List -->
+        <div class="col-lg-4">
+            <div class="notelens-card p-4 h-100">
+                <h6 class="fw-bold mb-3">Popular Subjects</h6>
+                <div class="list-group list-group-flush">
+                    {% for subj, count in subject_counts.items() %}
+                        {% if count > 0 %}
+                            <a href="{{ url_for('notes.subject_notes', subject_name=subj) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center bg-transparent border-0 px-0 py-2">
+                                <span class="d-flex align-items-center gap-2">
+                                    <i class="bi bi-journal-code text-primary"></i> {{ subj }}
+                                </span>
+                                <span class="badge bg-primary rounded-pill">{{ count }}</span>
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                    {% if total_notes == 0 %}
+                        <div class="text-center py-4 text-muted">
+                            <i class="bi bi-inbox fs-3 d-block mb-2"></i>
+                            No notes uploaded yet.<br>Click "Load Demo Notes" to test!
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Notes Table / Grid -->
+    <div class="notelens-card p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 class="fw-bold mb-0">Recently Added Notes</h6>
+            <a href="{{ url_for('notes.list_notes') }}" class="btn btn-sm btn-link text-decoration-none">View All Notes &rarr;</a>
+        </div>
+
+        {% if recent_notes %}
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Note Title</th>
+                            <th>Subject</th>
+                            <th>Topic</th>
+                            <th>Confidence</th>
+                            <th>Date Created</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for note in recent_notes %}
+                            <tr>
+                                <td>
+                                    <a href="{{ url_for('notes.note_detail', note_id=note.id) }}" class="fw-semibold text-decoration-none text-body">
+                                        {{ note.title }}
+                                    </a>
+                                </td>
+                                <td><span class="badge-subject">{{ note.subject }}</span></td>
+                                <td><span class="badge-topic">{{ note.topic }}</span></td>
+                                <td>
+                                    <span class="badge {% if note.confidence > 80 %}bg-success{% elif note.confidence > 50 %}bg-primary{% else %}bg-warning text-dark{% endif %}">
+                                        {{ note.confidence }}%
+                                    </span>
+                                </td>
+                                <td class="small text-muted">{{ note.created_at.strftime('%b %d, %Y') }}</td>
+                                <td class="text-end">
+                                    <a href="{{ url_for('notes.note_detail', note_id=note.id) }}" class="btn btn-sm btn-outline-primary me-1" title="View Note">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="{{ url_for('notes.edit_note_form', note_id=note.id) }}" class="btn btn-sm btn-outline-secondary" title="Edit Note">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="text-center py-4 text-muted">
+                <i class="bi bi-folder-x fs-2 d-block mb-2"></i>
+                No recent notes found. Upload your first handwritten note!
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const ctx = document.getElementById('subjectChart');
+    if (!ctx) return;
+
+    const labels = {{ chart_labels | tojson }};
+    const data = {{ chart_data | tojson }};
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Number of Notes',
+                data: data,
+                backgroundColor: 'rgba(79, 70, 229, 0.75)',
+                borderColor: 'rgb(79, 70, 229)',
+                borderWidth: 1.5,
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1 }
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

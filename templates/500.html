@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}500 Error - NoteLens{% endblock %}
+{% block header_title %}Server Error{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0 text-center py-5">
+    <div class="notelens-card p-5 d-inline-block shadow-sm" style="max-width: 550px;">
+        <i class="bi bi-exclamation-octagon display-1 text-danger mb-3 d-block"></i>
+        <h2 class="fw-bold mb-2">Internal Server Error</h2>
+        <p class="text-muted mb-4">{{ message or 'An unexpected server error occurred while processing your request.' }}</p>
+        <a href="{{ url_for('main.dashboard') }}" class="btn btn-primary btn-sm px-4">
+            <i class="bi bi-house-fill me-1"></i> Return to Dashboard
+        </a>
+    </div>
+</div>
+{% endblock %}

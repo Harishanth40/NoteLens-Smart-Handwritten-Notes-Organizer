@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ note.title }} - NoteLens{% endblock %}
+{% block header_title %}Note Details{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+
+    <!-- Action Toolbar Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+        <a href="{{ url_for('notes.list_notes') }}" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-arrow-left me-1"></i> Back to All Notes
+        </a>
+
+        <div class="d-flex flex-wrap gap-2">
+            <a href="{{ url_for('notes.download_txt', note_id=note.id) }}" class="btn btn-outline-primary btn-sm">
+                <i class="bi bi-file-earmark-text me-1"></i> Download TXT
+            </a>
+            <a href="{{ url_for('notes.download_pdf', note_id=note.id) }}" class="btn btn-outline-danger btn-sm">
+                <i class="bi bi-file-earmark-pdf me-1"></i> Download PDF
+            </a>
+            <a href="{{ url_for('notes.edit_note_form', note_id=note.id) }}" class="btn btn-primary btn-sm">
+                <i class="bi bi-pencil me-1"></i> Edit Note
+            </a>
+            <form action="{{ url_for('notes.delete_note', note_id=note.id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this note?');">
+                <button type="submit" class="btn btn-danger btn-sm">
+                    <i class="bi bi-trash me-1"></i> Delete
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Detail Layout (Left Image / Right Metadata) -->
+    <div class="row g-4 mb-4">
+        <!-- Left Panel: Handwritten Note Image -->
+        <div class="col-lg-6">
+            <div class="notelens-card p-3 h-100 d-flex flex-column text-center">
+                <h6 class="fw-bold mb-3 text-start"><i class="bi bi-image me-2"></i>Original Handwritten Note</h6>
+                
+                <div class="bg-dark rounded p-2 d-flex align-items-center justify-content-center flex-grow-1" style="min-height: 350px;">
+                    {% if note.image_path %}
+                        <img src="{{ url_for('serve_upload', filename=note.image_path) }}" alt="{{ note.title }}" class="img-fluid rounded" style="max-height: 480px; object-fit: contain;" onerror="this.onerror=null; this.src='https://placehold.co/600x400/1e293b/f8fafc?text=Handwritten+Note+Image';">
+                    {% else %}
+                        <div class="text-muted">
+                            <i class="bi bi-file-earmark-image fs-1 d-block mb-2"></i>
+                            No image file attached
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel: Metadata & Classifications -->
+        <div class="col-lg-6">
+            <div class="notelens-card p-4 h-100 d-flex flex-column">
+                <h3 class="fw-bold mb-3">{{ note.title }}</h3>
+
+                <div class="mb-4">
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <span class="text-muted small d-block">Subject</span>
+                            <span class="badge-subject fs-6">{{ note.subject }}</span>
+                        </div>
+                        <div class="col-6">
+                            <span class="text-muted small d-block">Topic</span>
+                            <span class="badge-topic fs-6">{{ note.topic }}</span>
+                        </div>
+                        <div class="col-6">
+                            <span class="text-muted small d-block">Confidence Score</span>
+                            <span class="badge {% if note.confidence > 80 %}bg-success{% elif note.confidence > 50 %}bg-primary{% else %}bg-warning text-dark{% endif %} fs-6">
+                                {{ note.confidence }}% Score
+                            </span>
+                        </div>
+                        <div class="col-6">
+                            <span class="text-muted small d-block">Date Uploaded</span>
+                            <span class="fw-semibold text-body">{{ note.created_at.strftime('%B %d, %Y - %I:%M %p') }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="mt-auto">
+
+                <div class="small text-muted">
+                    <div><strong>Original File:</strong> {{ note.original_filename }}</div>
+                    {% if note.is_demo %}<div class="text-info"><strong>Sample Demo Note</strong></div>{% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Extracted Text Display Area -->
+    <div class="notelens-card p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0"><i class="bi bi-file-text-fill text-primary me-2"></i>Extracted Handwritten Text</h5>
+            <button class="btn btn-sm btn-outline-secondary" onclick="navigator.clipboard.writeText(document.getElementById('textBlock').innerText); showToast('Copied to clipboard!', 'success');">
+                <i class="bi bi-clipboard me-1"></i> Copy Text
+            </button>
+        </div>
+
+        <div id="textBlock" class="extracted-text-area">
+            {{ note.extracted_text if note.extracted_text else '(No text content available)' }}
+        </div>
+    </div>
+
+</div>
+{% endblock %}

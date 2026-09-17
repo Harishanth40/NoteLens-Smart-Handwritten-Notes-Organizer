@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Settings - NoteLens{% endblock %}
+{% block header_title %}Application Settings{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+
+            <!-- Tesseract OCR Configuration Card -->
+            <div class="notelens-card p-4 mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold mb-0"><i class="bi bi-cpu-fill text-primary me-2"></i>Tesseract OCR Engine Configuration</h5>
+                    {% if tesseract_installed %}
+                        <span class="badge bg-success fs-6"><i class="bi bi-check-circle-fill me-1"></i>OCR Ready</span>
+                    {% else %}
+                        <span class="badge bg-warning text-dark fs-6"><i class="bi bi-exclamation-triangle-fill me-1"></i>Tesseract Not Configured</span>
+                    {% endif %}
+                </div>
+                <hr>
+
+                {% if not tesseract_installed %}
+                    <div class="alert alert-warning border-warning" role="alert">
+                        <h6 class="fw-bold"><i class="bi bi-exclamation-triangle me-2"></i>Tesseract OCR is not installed or configured.</h6>
+                        <p class="small mb-0">
+                            Please install Tesseract OCR on Windows (download from GitHub UB-Mannheim or Tesseract releases) 
+                            and specify the absolute path to <code>tesseract.exe</code> below.
+                        </p>
+                    </div>
+                {% endif %}
+
+                <form action="{{ url_for('main.settings') }}" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Windows Tesseract Executable Path</label>
+                        <input type="text" name="tesseract_path" class="form-control" value="{{ tesseract_path }}" placeholder="C:\Program Files\Tesseract-OCR\tesseract.exe">
+                        <div class="form-text">
+                            Resolved path: <code>{{ resolved_binary or 'Not Found' }}</code>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-sm px-4">Save Configuration</button>
+                </form>
+            </div>
+
+            <!-- Demo Data Management Card -->
+            <div class="notelens-card p-4 mb-4">
+                <h5 class="fw-bold mb-3"><i class="bi bi-database-fill-gear text-info me-2"></i>Demo Notes & Seeding</h5>
+                <p class="text-secondary small">
+                    Populate the database with realistic sample handwritten notes for Java, Operating Systems, DBMS, Networks, and Python.
+                </p>
+
+                <div class="d-flex gap-2">
+                    <form action="{{ url_for('main.load_demo_data') }}" method="POST">
+                        <button type="submit" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-database-add me-1"></i> Seed Sample Demo Notes
+                        </button>
+                    </form>
+                    <form action="{{ url_for('main.clear_demo_data') }}" method="POST" onsubmit="return confirm('Remove demo data?');">
+                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                            <i class="bi bi-trash me-1"></i> Clear Demo Notes
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- System Info Card -->
+            <div class="notelens-card p-4">
+                <h5 class="fw-bold mb-3"><i class="bi bi-info-circle-fill text-secondary me-2"></i>System & Environment Info</h5>
+                <div class="row g-2 small">
+                    <div class="col-4 text-muted">Framework:</div>
+                    <div class="col-8 fw-semibold">Flask (Python 3.12)</div>
+
+                    <div class="col-4 text-muted">Database:</div>
+                    <div class="col-8 fw-semibold">SQLite + SQLAlchemy</div>
+
+                    <div class="col-4 text-muted">Image Processing:</div>
+                    <div class="col-8 fw-semibold">OpenCV + Pillow</div>
+
+                    <div class="col-4 text-muted">PDF Engine:</div>
+                    <div class="col-8 fw-semibold">ReportLab</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

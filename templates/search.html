@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Results - NoteLens{% endblock %}
+{% block header_title %}Search Notes{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+
+    <div class="notelens-card p-4 mb-4">
+        <form action="{{ url_for('notes.search') }}" method="GET" class="row g-2 align-items-center">
+            <div class="col-md-10">
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                    <input type="text" name="q" class="form-control form-control-lg" placeholder="Search title, extracted text, subject, topic... e.g. deadlock" value="{{ query }}" required>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary btn-lg w-100">Search</button>
+            </div>
+        </form>
+    </div>
+
+    {% if query %}
+        <div class="mb-3">
+            <h5 class="fw-bold">Search Results for "<span class="text-primary">{{ query }}</span>"</h5>
+            <p class="text-muted small">Found {{ results | length }} matching notes</p>
+        </div>
+
+        {% if results %}
+            <div class="row g-4">
+                {% for note in results %}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="notelens-card h-100 p-4 d-flex flex-column">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="badge-subject">{{ note.subject }}</span>
+                                <span class="badge-topic">{{ note.topic }}</span>
+                            </div>
+
+                            <h5 class="fw-bold mb-2">
+                                <a href="{{ url_for('notes.note_detail', note_id=note.id) }}" class="text-decoration-none text-body">
+                                    {{ note.title }}
+                                </a>
+                            </h5>
+
+                            <p class="small text-muted flex-grow-1 mb-3">
+                                {{ note.extracted_text[:140] if note.extracted_text else '' }}...
+                            </p>
+
+                            <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top">
+                                <span class="small text-muted">{{ note.created_at.strftime('%b %d, %Y') }}</span>
+                                <a href="{{ url_for('notes.note_detail', note_id=note.id) }}" class="btn btn-sm btn-outline-primary">View Note</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="notelens-card p-5 text-center my-4">
+                <i class="bi bi-search-heart display-3 text-muted mb-3 d-block"></i>
+                <h4 class="fw-bold">No Notes Found</h4>
+                <p class="text-muted">No notes match your search term "{{ query }}". Try searching for different keywords like "deadlock", "class", or "sql".</p>
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="notelens-card p-5 text-center my-4">
+            <i class="bi bi-search display-3 text-primary mb-3 d-block"></i>
+            <h4 class="fw-bold">Global Note Search</h4>
+            <p class="text-muted">Enter any term above to search across note titles, OCR extracted text, subjects, and topics.</p>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}
